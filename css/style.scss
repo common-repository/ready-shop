@@ -1,0 +1,617 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+$primary-font:'Open Sans', sans-serif;
+$primary-background: #ffffff;
+$background-light: #ffffff;
+$primary-link: #0099cc;
+$primary-hover: #11aadd;
+$shadow-color: #DDDDDD;
+$muted-text: #999999;
+$border-color: #CCCCCC;
+$border-radius: 5px;
+
+// * {
+// 	border: 1px dotted red;
+// }
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+} /* @include flexbox(); /* enable a flex context for all direct */
+
+@mixin flex-direction($direction) {
+  -webkit-flex-direction: $direction;
+  -ms-flex-direction: $direction;
+  flex-direction: $direction;
+} /* @include flexbox-direction(direction); /* defines main-axis of the flex container */
+
+@mixin flex-wrap($wrap) {
+  -webkit-flex-wrap: $wrap;
+  -ms-flex-wrap: $wrap;
+  flex-wrap: $wrap;
+} /* @include flex-wrap(wrap); /* make the content wrap || no-wrap || wrap-reverse */
+
+@mixin flex($flex-grow, $flex-shrink, $flex-basis) {
+  -webkit-box-flex: $flex-grow $flex-shrink $flex-basis;
+  -moz-box-flex: $flex-grow $flex-shrink $flex-basis;
+  -webkit-flex: $flex-grow $flex-shrink $flex-basis;
+  -ms-flex: $flex-grow $flex-shrink $flex-basis;
+  flex: $flex-grow $flex-shrink $flex-basis;
+} /* @include flexbox(1, 1, auto); /* flex properties for child : flex-grow flex-shrink flex-basis */
+
+@mixin border($width, $style, $color, $radius) {
+  border-width: $width;
+  border-style: $style;
+  border-color: $color;
+  border-radius: $radius;
+} /* @include border(width, style, $border-color, $border-radius); /* key: width, style, color, radius */
+
+@mixin box-shadow($x, $y, $blur, $spread, $color) {
+  -webkit-box-shadow: $x $y $blur $spread $color;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    $x $y $blur $spread $color;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         $x $y $blur $spread $color;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+} /* @include box-shadow($x, $y, $blur, $spread, $color); /* key: horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+
+// -webkit-transition: background-color 0.2s; Safari
+//transition: background-color 0.2s;
+
+.rs-modal-open {
+  overflow: hidden;
+}
+
+.fa-rotate-180 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.rs-include {
+  font-family: $primary-font;
+
+  .rs-button {
+    background-color: $primary-link;
+    color: #ffffff;
+    display: block;
+    margin: 10px auto;
+    width: 90%;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: $border-radius;
+
+    &:hover {
+      background-color: $primary-hover;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .rs-inline-button {
+    @include border(1px, solid, $primary-link, $border-radius); /* key: width, style, color, radius */
+    color: $primary-link;
+    padding: 0 8px;
+    margin: 0 10px;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+      color: #FFFFFF;
+      background-color: $primary-hover;
+      @include border(2px, solid, $primary-hover, $border-radius); /* key: width, style, color, radius */
+    }
+  }
+
+  .rs-link {
+    color: $primary-link;
+    text-decoration: none;
+
+    &:hover {
+      color: $primary-hover;
+    }
+  }
+
+
+
+  .rs {
+    &.rs-no-margin {
+      margin: 0;
+    }
+
+    &.rs-min-padding {
+      padding: 5px 0;
+    }
+
+    &.rs-hover {
+      cursor: pointer;
+    }
+
+    &.rs-muted-icon {
+      color: #AAAAAA;
+    }
+
+    &.rs-share-icon {
+      font-size: 1.6em;
+      margin: 0 1px;
+
+      &.rs-facebook {
+        color: #3869AE;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.rs-pinterest {
+        color: #C2001F;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.rs-twitter {
+        color: #00A3EE;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.rs-google-plus {
+        color: #D7041D;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.rs-email-share {
+        color: #666666;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+
+  /** Cart ****************************************************************/
+  #cart {
+    /*max-height is measured and inserted via main.js;*/
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    @include flexbox();
+    @include flex-direction(column);
+    width: 100%;
+    max-width: 450px;
+    z-index: 99;
+    @include box-shadow(1px, 2px, 4px, 1px, #777777); /* horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+
+    #cart-tab {
+      background-color: $primary-background;
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      padding-left: 10px;
+      border-radius: $border-radius 0 0 0;
+      z-index: 98;
+      @include box-shadow(0px, 1px, 1px, 0px, $shadow-color); /* key: horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+
+      &:hover {
+        pointer: cursor;
+      }
+
+      label + span {
+        color: $primary-link;
+        float: right;
+        line-height: 40px;
+        margin-right: 15px;
+      }
+    }
+
+    #cart-body {
+      display: none; /* hide cart body by default */
+      flex-grow: 1;
+      overflow: auto;
+      background-color: $background-light;
+      width: 100%;
+
+
+      .cart-item {
+        width: 98%;
+        height: 100px;
+        margin: 0 auto;
+        position: relative;
+        @include border(1px, solid, $border-color, 0px); /* key: width, style, color, radius */
+        border-style: none none solid none;
+
+        &:hover .remove-item{
+          display: inline-block;
+        }
+
+        .item-thumbnail {
+          width: 90px;
+          height: 85%;
+          float: left;
+
+          img {
+            display: block;
+            height: 80%;
+            margin: 8px auto;
+          }
+        }
+        a.item-name {
+          color: $primary-link;
+          font-size: 1.1em;
+          text-decoration: none;
+          line-height: 50px;
+        }
+        .item-quantity {
+          @include border(1px, solid, $border-color, $border-radius); /* key: width, style, color, radius */
+          padding-left: 5px;
+
+          input {
+            background-color: transparent;
+            width: 2.1em;
+            text-align: right;
+            border: none;
+          }
+        }
+        .item-price { /* potentially redundant :: rs-price :: evaluate */
+          position: absolute;
+          line-height: 100px;
+          padding: 0 15px;
+          right: 0;
+          top: 0;
+        }
+        .remove-item {
+          display: none;
+          padding: 0 25px;
+          color: #777777;
+
+          &:hover {
+            color: #ff0000;
+          }
+        }
+      }
+    }
+
+    #cart-footer {
+      display: none; /* hide cart footer by default */
+      background-color: $background-light;
+      width: 100%;
+      height: 120px;
+      z-index: 98;
+      @include box-shadow(0px, -1px, 1px, 0px, $shadow-color); /* key: horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+
+      #cart-subtotal {
+        margin: 0 auto;
+        padding-top: 5px;
+        width: 90%;
+        height: 20px;
+        line-height: 45px;
+        font-size: 1.2em;
+        text-align: right;
+      }
+    }
+  }
+
+  /** Product Include ****************************************************************/
+  .rs-display-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 40px auto;
+    @include border(3px, solid, $border-color, $border-radius); /* key: width, style, color, radius */
+
+    .item-thumbnail {
+      display: inline-block;
+      width: 100px;
+      padding: 10px;
+
+      img {
+        width: 90px;
+        height: 100px;
+        vertical-align: baseline;
+      }
+    }
+
+    .title-info {
+      display: inline-block;
+      width: 100%;
+      max-width: 625px;
+      padding: 0 5px 0 10px;
+
+      a.item-name {
+        color: $primary-link;
+        font-size: 1.1em;
+        text-decoration: none;
+        line-height: 40px;
+      }
+
+      p {
+        margin: 15px 0 10px;
+        width: 95%;
+      }
+    }
+    .product-action {
+      position: absolute;
+      top: 10%;
+      right: 10px;
+
+      span.item-price { /* potentially redundant :: single class selector item-price, rs-price :: evaluate */
+        margin-right: 20px;
+      }
+
+      .add-to-cart {
+        width: 110px;
+        display: inline;
+        padding: 10px 15px;
+      }
+    }
+  }
+
+
+
+  /** Modal ****************************************************************/
+  &.rs-modal {
+    @include flexbox();
+    @include flex-direction(column);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    max-width: 1200px;
+    max-height: 100%;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    border-radius: $border-radius;
+    @include border(3px, solid, $border-color, $border-radius); /* key: width, style, color, radius */
+    z-index: 1000;
+    display: none; /*hides the modal by default*/
+
+    @media only screen and (max-width: 1200px) {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: none;
+      border: none;
+    }
+
+    .rs-modal-header {
+      border: none;
+      background-color: #FFFFFF;
+      @include flexbox();
+      min-height: 45px;
+      position: sticky;
+      position: -webkit-sticky;
+      position: -moz-sticky;
+      position: -ms-sticky;
+      position: -o-sticky;
+      top: 0;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+
+      h1 {
+        margin: 0;
+        font-size: 1em;
+        padding: 8px 0;
+        color: $muted-text;
+      }
+      span {
+        margin: 0;
+        padding: 8px 0;
+      }
+      @media only screen and (max-width: 1200px) {
+        @include box-shadow(0px, 1px, 1px, 0px, $shadow-color); /* key: horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+      }
+    }
+    .rs-modal-body {
+      border: none;
+      @include flexbox();
+      @include flex-wrap(wrap);
+      @include flex(1, 1, auto);
+      overflow-y: auto;
+
+      .rs-product-images {
+        @include flex-direction(column);
+        @include flex(2, 1, 35%);
+        min-width: 300px;
+        padding: 5px 15px;
+
+        img.rs-image-main {
+          width: 90%;
+        }
+        .rs-thumbnail-container {
+          width: 100%;
+          @include flexbox();
+          @include flex-direction(row);
+          @include flex-wrap(wrap);
+          align-items: center; /* how flex items are laid out along the cross-axis on the current line */
+          justify-content: flex-start;
+
+          .rs-thumbnail {
+            width: 28%;
+            @include flex(0, 0, auto);
+            padding: 5px;
+            margin: 0 0 5px 0;
+            text-align: center;
+            @include border(1px, solid, transparent, $border-radius);
+
+            &:hover {
+              cursor: pointer;
+              @include border(1px, solid, $border-color, $border-radius);
+            }
+
+            img {
+              max-height: 70%;
+              max-width: 70%;
+            }
+
+            &.rs-selected {
+              @include border(1px, solid, $primary-hover, $border-radius);
+            }
+          }
+          @media only screen and (max-width: 670px) {
+            @include flex-wrap(nowrap);
+            width: 100%;
+            overflow-x: scroll;
+            .rs-thumbnail {
+              margin-right: 10px;
+              @include border(1px, solid, $border-color, $border-radius);
+            }
+          }
+        }
+      }
+      .rs-product-info {
+        @include flex(4, 1, 50%); /* flex-grow, flex-shrink, flex-basis */
+        min-width: 300px;
+        padding: 5px 15px 20px;
+        overflow-y: auto;
+
+        & > * {
+          padding: 5px 0;
+          margin: 0;
+          max-width: 100%;
+        }
+
+        .rs-product-title {
+          // font-size: 1.9em;
+        }
+        .rs-rating {
+          padding: 2px 0 5px;
+          span {
+            color: #FFBB32;
+          }
+        }
+        .rs-price { /* potentially redundant :: item-price :: evaluate */
+          font-size: 1.7em;
+          font-weight: 600;
+        }
+        .rs-price-info { /* potentially redundant :: item-price :: evaluate */
+          font-size: 1em;
+          color: #666666;
+
+          &.rs-dollar-off {
+            text-decoration: line-through;
+          }
+        }
+        p {
+          max-width: 600px;
+
+        }
+      }
+    }
+    .rs-modal-footer {
+      @include flexbox();
+      min-height: 55px;
+      align-items: center;
+      justify-content: flex-end;
+      border: none;
+      background-color: #FFFFFF;
+      position: sticky;
+      position: -webkit-sticky;
+      position: -moz-sticky;
+      position: -ms-sticky;
+      position: -o-sticky;
+      bottom: 0;
+      padding: 10px 15px 15px;
+      @media only screen and (max-width: 1200px) {
+        @include box-shadow(0px, -1px, 1px, 0px, $shadow-color); /* key: horizontal-offset, $vertical-offset, $blur-radius, $spread-radius, $color */
+        justify-content: center;
+        padding: 5px 15px;
+      }
+
+      .item-quantity {  /* redundant */
+        @include border(1px, solid, $border-color, $border-radius); /* key: width, style, color, radius */
+        display: inline-block;
+        height: 43px;
+        line-height: 43px;
+        padding: 0 0 0 10px;
+        margin: 0 10px 0 0;
+
+        input {
+          background-color: transparent;
+          font-size: 1.2em;
+          width: 2.3em;
+          height: 90%;
+          text-align: center;
+          border: none;
+        }
+      }
+
+      .rs-button.add-to-cart {
+        display: inline-block;
+        margin: 0 0;
+        width: 200px;
+      }
+    }
+  }
+
+  &.rs-modal-bg {
+    background-color: rgba(99, 99, 99, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    display: none; /*hides the modal background by default*/
+  }
+}
+
+@media only screen and (max-width: 575px) { /*mobile breakpoint*/
+
+}
+
+@media only screen and (max-width: 959px) and (min-width: 576px) { /*tablet breakpoints*/
+
+}
+
+@media only screen and (min-width: 960px) { /*desktop breakpoint*/
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
